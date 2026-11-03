@@ -11,6 +11,8 @@ static def getBuildDate() {
 def BUILD_DATE = getBuildDate()
 
 android {
+    namespace "com.ahmadabuhasan.travisci"
+
     signingConfigs {
         config {
             storeFile file('keystore-travisci.jks')
@@ -20,7 +22,7 @@ android {
         }
     }
     compileSdkVersion 30
-    buildToolsVersion "30.0.3"
+    buildToolsVersion "35.0.0"
 
     defaultConfig {
         applicationId "com.ahmadabuhasan.travisci"

@@ -1,18 +1,13 @@
 language: android
-jdk: oraclejdk8
-
-sudo: false
+dist: jammy
+jdk: openjdk21
 
 android:
   components:
     - tools
     - platform-tools
-    - build-tools-30.0.1
-    - android-30
-    - extra-google-google_play_services
-    - extra-google-m2repository
-    - extra-android-m2repository
-    - extra-android-support
+    - build-tools;35.0.0
+    - platforms;android-30
   licenses:
     - android-sdk-license-.+
     - google-gdk-license-.+
@@ -20,31 +15,23 @@ android:
 before_install:
   - chmod +x gradlew
 
-before_script:
-  - echo yes | ${ANDROID_HOME}tools/bin/sdkmanager "tools"
-  - echo yes | ${ANDROID_HOME}tools/bin/sdkmanager "platform-tools"
-  - echo yes | ${ANDROID_HOME}tools/bin/sdkmanager "build-tools;30.0.1"
-  - echo yes | ${ANDROID_HOME}tools/bin/sdkmanager "platforms;android-25"
-
 script:
-  - ./gradlew clean build
-  - ./gradlew assembleRelease
+  - ./gradlew --no-daemon clean build assembleRelease
 
 before_cache:
-  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
   - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
 
 cache:
   directories:
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper/
-    - $HOME/.android/build-cache
 
 deploy:
   provider: releases
   api_key:
     secure: EX45KzA0/mNnBK9+cQ9PbndQoOiYdBQXjx9Atmn7Lf2ibjEfOxQylZE5zuZWGcfWIp+bBwWe7Bje7FuYUvkcWNoCCahZQvxJKfFd0G5ME/LuYvdBqWqctUBJ0XEUeHAdLhZa6UE2n5Nth0MU2n4jiPLhXoPK1IsGUgo77Jk4Vr4Z+IT/Q676Bw2dafPNhdPLWQydhy0ehTMsqWo02OwAXsECJXJT0N85TEpdE9VsWcQJjKepZedvfWUvJWu7NGacQNsWw3qSW8P3LZNBodm34N4uj8dIcfMysrBbIfTIrgy09eHHNP9LByODPGNokjvrApNHxVjkbXTZlP+/PkTFs6BHmNxCnAp1NTr49jEOrxcqGWlJWuVA4w3Jf1GgJNhwThUh/EBFyrQZCMlICyuvi2wR1JqP8XQVJj7ncb+c06Sw9ureAS1brERIsBvXIqR1DlrGUc3UgJMx55RxqP6IsXqUai+4uSzYssMyZ7+xqJ//7EgzGcBVSYPQYS7udMcmArq+rnd4ylZoAadTiIoHOv4I9Zwpz/2l9b/SqeZUS3Pb4deQtMgrFTG0YOET3aM+oyHBRUVcS8kdWiEBmSWn0EthN56ykfzRAU+gUYmg0IOVSA/6DEG6gUOkEPKj4upaKt0SzZB/ZxEHxEj27uhgi4fhmL/ddoqYiUI/w48cgF8=
-  file: app/release/app-release.apk
+  file: app/build/outputs/apk/release/app-release.apk
   skip_cleanup: true
   on:
     repo: eby8zevin/TravisCI-Android
